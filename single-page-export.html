@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-PT" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Igreja Árvore de Jesus</title>
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            green: '#0d2b1f',
+                            gold: '#d4af37',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Cinzel', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons via CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .modal { display: none; }
+        .modal.active { display: flex; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-content { animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased overflow-x-hidden">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-40 bg-brand-green/95 backdrop-blur-md border-b border-brand-gold/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="#hero" class="flex items-center gap-3 shrink-0 mr-4">
+                    <i data-lucide="leaf" class="text-brand-gold w-8 h-8"></i>
+                    <span class="text-white font-serif font-bold text-xl tracking-wider leading-none">ÁRVORE<br/><span class="text-brand-gold text-sm tracking-[0.2em] font-sans">de Jesus</span></span>
+                </a>
+                <div class="hidden xl:flex items-center space-x-4 flex-wrap justify-end">
+                    <a href="#hero" class="text-white drop-shadow-md hover:text-brand-gold transition-colors text-sm font-bold">Início</a>
+                    <a href="#about" class="text-white drop-shadow-md hover:text-brand-gold transition-colors text-sm font-bold">Quem Somos</a>
+                    <a href="#voluntariado" class="text-white drop-shadow-md hover:text-brand-gold transition-colors text-sm font-bold">Ministérios</a>
+                    <a href="#courses" class="text-white drop-shadow-md hover:text-brand-gold transition-colors text-sm font-bold">Estudos Bíblicos</a>
+                    <a href="#schedule" class="text-white drop-shadow-md hover:text-brand-gold transition-colors text-sm font-bold">Eventos</a>
+                    <a href="#prayer" class="text-white drop-shadow-md hover:text-brand-gold transition-colors text-sm font-bold">Oração</a>
+                    <a href="#testimonials" class="text-white drop-shadow-md hover:text-brand-gold transition-colors text-sm font-bold">Testemunhos</a>
+                    <a href="#donations" class="text-brand-gold flex items-center gap-1 hover:text-brand-gold transition-colors text-sm font-bold"><i data-lucide="heart" class="w-3 h-3"></i> Doações</a>
+                    <a href="#prayer" class="text-white drop-shadow-md hover:text-brand-gold transition-colors text-sm font-bold">Contato</a>
+                    <a href="#members" class="bg-brand-gold text-brand-green px-4 py-2 rounded-full font-bold text-sm hover:bg-yellow-400 transition-colors">Entrar</a>
+                </div>
+                <!-- Menu Mobile icon would go here in actual implementation with JS toggle -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-20">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&q=80')] bg-cover bg-center">
+            <div class="absolute inset-0 bg-brand-green/80 flex items-center justify-center"></div>
+        </div>
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto mt-16">
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-serif text-white font-bold mb-6 tracking-tight">Vem e Vê</h1>
+            <p class="text-xl md:text-2xl text-gray-300 mb-10 font-light max-w-2xl mx-auto">Uma comunidade fundamentada no amor de Cristo, onde cada vida ganha um propósito e cada pessoa é família.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="openModal('Bem-vindo', 'Deixa o teu contacto para sermos família e planearmos a tua visita.')" class="bg-brand-gold text-brand-green px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-400 transition-all flex items-center justify-center gap-2">
+                    Planeia a tua Visita <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quem Somos (About conceptual preview) -->
+    <section id="about" class="py-24 bg-gray-50 relative overflow-hidden">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-serif text-brand-green font-bold">Quem Somos</h2>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ministérios -->
+    <section id="voluntariado" class="py-24 bg-white border-t border-gray-200">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+             <h2 class="text-3xl font-serif text-brand-green font-bold mb-4">Serve com Propósito</h2>
+             <p class="text-gray-600 mb-12 max-w-2xl mx-auto">Toda a pessoa tem um dom. Junta-te aos nossos ministérios.</p>
+             
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                <!-- Card 1 -->
+                <div class="bg-gray-50 p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition-shadow flex flex-col h-full">
+                    <div class="bg-white w-16 h-16 rounded-2xl shadow-sm flex items-center justify-center mb-6">
+                        <i data-lucide="music" class="w-8 h-8 text-brand-gold"></i>
+                    </div>
+                    <h3 class="font-bold text-xl text-brand-green mb-2">Louvor e Adoração</h3>
+                    <p class="text-gray-600 mb-6 flex-grow">Se tocas instrumento ou cantas, junta-te a nós para ministrar adoração.</p>
+                    <button onclick="openModal('Inscrição no Louvor', 'Inscreve-te para começares a servir na música e no louvor da igreja.')" class="text-brand-green font-bold border-b border-brand-green pb-1 self-start hover:text-brand-gold hover:border-brand-gold transition-colors">Quero Participar</button>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-gray-50 p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition-shadow flex flex-col h-full">
+                    <div class="bg-white w-16 h-16 rounded-2xl shadow-sm flex items-center justify-center mb-6">
+                        <i data-lucide="camera" class="w-8 h-8 text-brand-gold"></i>
+                    </div>
+                    <h3 class="font-bold text-xl text-brand-green mb-2">Multimédia e Imagem</h3>
+                    <p class="text-gray-600 mb-6 flex-grow">Ajuda na transmissão online, ecrãs, fotografia, vídeo e som.</p>
+                    <button onclick="openModal('Inscrição na Comunicação', 'Apoia a igreja tecnicamente nos bastidores, fotografia e vídeo.')" class="text-brand-green font-bold border-b border-brand-green pb-1 self-start hover:text-brand-gold hover:border-brand-gold transition-colors">Quero Participar</button>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-gray-50 p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition-shadow flex flex-col h-full">
+                    <div class="bg-white w-16 h-16 rounded-2xl shadow-sm flex items-center justify-center mb-6">
+                        <i data-lucide="users" class="w-8 h-8 text-brand-gold"></i>
+                    </div>
+                    <h3 class="font-bold text-xl text-brand-green mb-2">Acolhimento e Diáconos</h3>
+                    <p class="text-gray-600 mb-6 flex-grow">Apoio aos visitantes, segurança, arrumação e assistência logística nas reuniões.</p>
+                    <button onclick="openModal('Inscrição no Acolhimento', 'Recebe os novos visitantes na porta com o amor de Cristo.')" class="text-brand-green font-bold border-b border-brand-green pb-1 self-start hover:text-brand-gold hover:border-brand-gold transition-colors">Quero Participar</button>
+                </div>
+             </div>
+        </div>
+    </section>
+
+    <!-- Cursos e Formação -->
+    <section id="courses" class="py-24 bg-gray-50 border-t border-gray-200">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-serif text-brand-green font-bold mb-4 text-center">Instituto Bíblico</h2>
+            <p class="text-gray-600 mb-12 max-w-2xl mx-auto text-center">Cursos criados para edificar a tua vida espiritual, do princípio ao ensino mais profundo.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Curso 1 -->
+                <div class="bg-white border border-gray-100 rounded-3xl p-8 flex flex-col md:flex-row gap-6 items-start hover:shadow-lg transition-all">
+                    <div class="bg-gray-50 p-4 rounded-2xl shadow-sm shrink-0">
+                        <i data-lucide="book-open" class="w-10 h-10 text-brand-green"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <h3 class="font-bold text-2xl text-brand-green mb-2">Bases da Fé (Discipulado)</h3>
+                        <p class="text-gray-600 mb-4 text-sm">A fundação de todo o crente. O que acreditamos, o batismo nas águas, como orar e ler as escrituras.</p>
+                        <button onclick="openModal('Matrícula em Bases da Fé', 'Inicia o teu percurso de discipulado online. Vamos inscrever-te na turma.')" class="w-full bg-brand-green hover:bg-emerald-900 text-white font-bold py-3 rounded-xl transition-all shadow-md mt-auto">
+                            Matricular Agora
+                        </button>
+                    </div>
+                </div>
+                <!-- Curso 2 -->
+                <div class="bg-white border border-gray-100 rounded-3xl p-8 flex flex-col md:flex-row gap-6 items-start hover:shadow-lg transition-all">
+                    <div class="bg-gray-50 p-4 rounded-2xl shadow-sm shrink-0">
+                        <i data-lucide="flame" class="w-10 h-10 text-brand-gold"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <h3 class="font-bold text-2xl text-brand-green mb-2">Formação de Liderança</h3>
+                        <p class="text-gray-600 mb-4 text-sm">Preparação madura para quem deseja ser líder de pequeno grupo e auxiliar no ministério pastoral da igreja local.</p>
+                        <button onclick="openModal('Matrícula em Liderança', 'Prepara-te para formar discípulos. Confirma a tua inscrição no módulo.')" class="w-full bg-brand-green hover:bg-emerald-900 text-white font-bold py-3 rounded-xl transition-all shadow-md mt-auto">
+                            Matricular Agora
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Eventos -->
+    <section id="schedule" class="py-24 bg-brand-green text-white">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-serif font-bold mb-4">Nossos Eventos</h2>
+            <p class="text-gray-300 max-w-2xl mx-auto mb-12">Fique por dentro da programação.</p>
+        </div>
+    </section>
+
+    <!-- Member Area Login -->
+    <section id="members" class="py-24 bg-brand-green text-center relative overflow-hidden border-t border-brand-gold/10">
+        <div class="max-w-md mx-auto px-4 relative z-10">
+            <i data-lucide="lock" class="w-12 h-12 text-brand-gold mx-auto mb-6"></i>
+            <h2 class="text-3xl font-serif text-white font-bold mb-4">Portal do Membro</h2>
+            <p class="text-gray-300 mb-8 text-sm">Acesso restrito para membros da comunidade Árvore de Jesus. Assiste aqui aos cursos e materiais em vídeo.</p>
+            
+            <form onsubmit="handleDemoSubmit(event, 'Login na Plataforma', 'Portal de autenticação indisponível no momento. A secretaria global brevemente dará permissões para o acesso generalizado.')" class="space-y-4">
+                <input required type="email" placeholder="O teu e-mail" class="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold" />
+                <input required type="password" placeholder="Palavra-passe" class="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold" />
+                <button type="submit" class="w-full bg-brand-gold hover:bg-yellow-500 text-brand-green font-bold py-4 rounded-xl shadow-lg transition-all">
+                    Entrar na Plataforma
+                </button>
+                <div class="text-sm text-gray-400 pt-2 cursor-pointer hover:text-white" onclick="openModal('Criar Conta na Plataforma', 'Solicita à secretaria central o acesso virtual. Tens de ser membro batizado.')">Desejas solicitar os teus acessos à igreja?</div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-20 pb-10">
+        <div class="max-w-7xl mx-auto px-4 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <div>
+                     <a href="#" class="flex items-center gap-2 mb-6">
+                        <i data-lucide="leaf" class="text-brand-gold w-6 h-6"></i>
+                        <span class="text-white font-serif font-bold text-lg">ÁRVORE <span class="text-brand-gold text-xs uppercase ml-1">de Jesus</span></span>
+                    </a>
+                    <p class="text-gray-500 text-sm">Somos uma comunidade baseada na graça libertadora e na palavra viva de Deus. O Senhor tem o melhor para ti e para tua família.</p>
+                </div>
+                <div>
+                    <h4 class="font-serif font-bold mb-6 text-brand-gold">Contactos & Morada</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li class="flex items-center"><i data-lucide="map-pin" class="w-4 h-4 mr-3"></i> Rua da Esperança Circular 123, Lisboa</li>
+                        <li class="flex items-center"><i data-lucide="phone" class="w-4 h-4 mr-3"></i> +351 910 000 000</li>
+                        <li class="flex items-center"><i data-lucide="mail" class="w-4 h-4 mr-3"></i> pastoral@arvoredejesus.pt</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-serif font-bold mb-6 text-brand-gold">Newsletter</h4>
+                    <p class="text-gray-400 text-sm mb-4">Receba estudos bíblicos, comunicados vitais e a leitura diária no seu telemóvel ou computador.</p>
+                    <form onsubmit="handleDemoSubmit(event, 'Newsletter Semanal', 'O seu e-mail foi adicionado com sucesso. Bem-vindo à rede de circulação de estudos!')" class="flex flex-col gap-2">
+                        <input required type="email" placeholder="O seu melhor e-mail" class="bg-white/10 px-4 py-3 rounded-lg text-sm text-white focus:outline-none w-full border border-white/10 focus:border-brand-gold" />
+                        <button type="submit" class="bg-brand-gold hover:bg-yellow-500 text-brand-green py-3 rounded-lg font-bold text-sm w-full transition-colors">Subscrever e Apoiar</button>
+                    </form>
+                </div>
+            </div>
+            <div class="border-t border-white/10 pt-8 text-center text-gray-500 text-sm">
+                <p>&copy; 2024 Igreja Árvore de Jesus. Todos os direitos reservados. Para a glória de Deus.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Universal Modal Form Script (Interactivity without React) -->
+    <div id="dynamic-modal" class="modal fixed inset-0 z-50 bg-black/60 backdrop-blur-sm items-center justify-center p-4">
+        <div class="modal-content bg-white rounded-3xl p-8 max-w-md w-full relative shadow-2xl text-left">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-brand-green">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            
+            <div id="modal-body" class="block">
+                <h3 id="modal-title" class="text-2xl font-serif font-bold text-brand-green mb-2"></h3>
+                <p id="modal-desc" class="text-gray-600 mb-6 font-medium text-brand-gold text-sm"></p>
+                
+                <form id="modal-form" onsubmit="submitModalForm(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
+                        <input required type="text" class="w-full px-4 py-3 text-sm rounded-xl border border-gray-300 focus:ring-brand-gold focus:border-brand-gold outline-none" placeholder="O seu nome e apelido..." />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Telefone WhatsApp / E-mail</label>
+                        <input required type="text" class="w-full px-4 py-3 text-sm rounded-xl border border-gray-300 focus:ring-brand-gold focus:border-brand-gold outline-none" placeholder="Como podemos contatá-lo?" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Escreva uma mensagem ou pedido de oração</label>
+                        <textarea rows="3" class="w-full px-4 py-3 text-sm rounded-xl border border-gray-300 focus:ring-brand-gold focus:border-brand-gold outline-none resize-none" placeholder="Opcional. Exemplo: Tenho estado doente e necessitava que visitassem a minha casa..."></textarea>
+                    </div>
+                    <button type="submit" id="modal-submit-btn" class="w-full bg-brand-green hover:bg-emerald-900 text-white font-bold py-4 rounded-xl flex items-center justify-center transition-colors shadow-md mt-4">
+                        <i data-lucide="send" class="w-5 h-5 mr-2"></i> <span id="btn-text">Confirmar Dados e Enviar</span>
+                    </button>
+                </form>
+            </div>
+
+            <div id="modal-success" class="hidden text-center py-8">
+                <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 scale-110">
+                    <i data-lucide="check-circle" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-brand-green mb-2">Formulário Recebido!</h3>
+                <p class="text-gray-600 text-sm">Aleluia! A tua mensagem foi processada diretamente para nós com sucesso. O corpo de conselheiros e a liderança entrarão em contato brevemente.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- UI Interactions Script -->
+    <script>
+        // Render Lucide Icons
+        lucide.createIcons();
+
+        // Target Elements
+        const modal = document.getElementById('dynamic-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDesc = document.getElementById('modal-desc');
+        const modalBody = document.getElementById('modal-body');
+        const modalSuccess = document.getElementById('modal-success');
+        const btnText = document.getElementById('btn-text');
+        const submitBtn = document.getElementById('modal-submit-btn');
+        const modalForm = document.getElementById('modal-form');
+
+        // Central Function Box for the Generic Reusable Modal Architecture
+        function openModal(title, desc) {
+            modalTitle.innerText = title;
+            modalDesc.innerText = desc;
+            
+            // Layout resetting
+            modalForm.reset();
+            modalBody.classList.remove('hidden');
+            modalBody.classList.add('block');
+            modalSuccess.classList.add('hidden');
+            modalSuccess.classList.remove('block');
+            
+            // Animation Trigger
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        function submitModalForm(e) {
+            e.preventDefault();
+            
+            // UI Blocking and loading representation during JS timer
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.7';
+            btnText.innerText = "A Enviar ao sistema...";
+
+            // Network simulation timer
+            setTimeout(() => {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                btnText.innerText = "Confirmar Dados e Enviar";
+                
+                // Switch interface components to success layout
+                modalBody.classList.add('hidden');
+                modalBody.classList.remove('block');
+                modalSuccess.classList.remove('hidden');
+                modalSuccess.classList.add('block');
+                
+                // Automatic dismissal
+                setTimeout(() => {
+                    closeModal();
+                }, 4000);
+            }, 1500);
+        }
+
+        // Generic function for handling direct form components without modals
+        function handleDemoSubmit(e, action, msg) {
+            e.preventDefault();
+            alert(`[Sucesso - ${action}]:\n\n${msg}`);
+            e.target.reset();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "Árvore de Jesus",
+  "description": "Comunidade Cristã Digital - Um lugar de restauração e conexão na Árvore de Jesus.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
