@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "motion/react";
+import { onAuthStateChanged } from "firebase/auth";
 import { Users, Lock, X, CheckCircle } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
@@ -11,6 +12,14 @@ export function MembersArea() {
   const [isSigningUp, setIsSigningUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [user, setUser] = useState<any>(null);
+  useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
+
+  return () => unsubscribe();
+}, []);
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
@@ -62,49 +71,69 @@ export function MembersArea() {
           <p className="text-gray-300 text-lg mb-10 max-w-2xl mx-auto">
             Conteúdo exclusivo para os membros da comunidade Árvore de Jesus. Estudos bíblicos, materiais de discipulado e acompanhamento pastoral.
           </p>
+          {user && (
+  <div className="mb-6 text-brand-gold font-bold">
+    ✅ Bem-vindo, {user.email}
+  </div>
+)}
 
-          <form className="max-w-md mx-auto space-y-4" onSubmit={handleLogin}>
-            <div>
-              <input
-  required
-  type="email"
-  value={email}
-  onChange={(e) => setEmail(e.target.value)}
-  placeholder="O teu e-mail"
-  className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold placeholder-gray-400 transition-all"
-/>
-            </div>
-            <div className="relative">
-              <input
-  required
-  type="password"
-  value={password}
-  onChange={(e) => setPassword(e.target.value)}
-  placeholder="Palavra-passe"
-  className="w-full px-5 py-4 pl-12 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold placeholder-gray-400 transition-all"
-/>
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-            </div>
-            
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-brand-gold hover:bg-yellow-500 text-brand-green font-bold text-lg py-4 rounded-xl shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all mt-4 hover:shadow-[0_0_25px_rgba(212,175,55,0.6)] flex items-center justify-center disabled:opacity-70"
-            >
-              {isSubmitting ? <div className="w-5 h-5 border-2 border-brand-green border-t-transparent rounded-full animate-spin"></div> : "Entrar na Plataforma"}
-            </button>
-            
-            {successMsg && (
-              <div className="mt-4 p-4 rounded-xl bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-sm animate-pulse">
-                {successMsg}
-              </div>
-            )}
+{!user && (
+  <form className="max-w-md mx-auto space-y-4" onSubmit={handleLogin}>
+    <div>
+      <input
+        required
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="O teu e-mail"
+        className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold placeholder-gray-400 transition-all"
+      />
+    </div>
 
-            <div className="pt-4 text-sm text-gray-400 flex justify-between items-center">
-              <a href="#" className="hover:text-brand-gold transition-colors">Esqueceste a senha?</a>
-              <button type="button" onClick={() => setShowSignup(true)} className="hover:text-brand-gold transition-colors font-medium">Criar Conta</button>
-            </div>
-          </form>
+    <div className="relative">
+      <input
+        required
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Palavra-passe"
+        className="w-full px-5 py-4 pl-12 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold placeholder-gray-400 transition-all"
+      />
+      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+    </div>
+
+    <button
+      type="submit"
+      disabled={isSubmitting}
+      className="w-full bg-brand-gold hover:bg-yellow-500 text-brand-green font-bold text-lg py-4 rounded-xl shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all mt-4 hover:shadow-[0_0_25px_rgba(212,175,55,0.6)] flex items-center justify-center disabled:opacity-70"
+    >
+      {isSubmitting ? (
+        <div className="w-5 h-5 border-2 border-brand-green border-t-transparent rounded-full animate-spin"></div>
+      ) : (
+        "Entrar na Plataforma"
+      )}
+    </button>
+
+    {successMsg && (
+      <div className="mt-4 p-4 rounded-xl bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-sm animate-pulse">
+        {successMsg}
+      </div>
+    )}
+
+    <div className="pt-4 text-sm text-gray-400 flex justify-between items-center">
+      <a href="#" className="hover:text-brand-gold transition-colors">
+        Esqueceste a senha?
+      </a>
+      <button
+        type="button"
+        onClick={() => setShowSignup(true)}
+        className="hover:text-brand-gold transition-colors font-medium"
+      >
+        Criar Conta
+      </button>
+    </div>
+  </form>
+)}
         </motion.div>
 
         <AnimatePresence>
