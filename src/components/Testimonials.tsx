@@ -1,8 +1,8 @@
 import { motion } from "motion/react";
+import { collection, getDocs, addDoc, query, orderBy } from "firebase/firestore";
 import { Quote, Send } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { db } from "../firebase";
-import { collection, getDocs, addDoc } from "firebase/firestore";
 
 export function Testimonials() {
   const [showForm, setShowForm] = useState(false);
@@ -14,18 +14,25 @@ export function Testimonials() {
 
   // ✅ Buscar testemunhos do banco
   useEffect(() => {
-    const fetchTestemunhos = async () => {
-      const querySnapshot = await getDocs(collection(db, "testemunhos"));
-      const lista = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setTestemunhos(lista);
-    };
+  const fetchTestemunhos = async () => {
 
-    fetchTestemunhos();
-  }, []);
+    const q = query(
+      collection(db, "testemunhos"),
+      orderBy("data", "desc")
+    );
 
+    const querySnapshot = await getDocs(q);
+
+    const lista = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    setTestemunhos(lista);
+  };
+
+  fetchTestemunhos();
+}, []);
   // ✅ Salvar novo testemunho
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
