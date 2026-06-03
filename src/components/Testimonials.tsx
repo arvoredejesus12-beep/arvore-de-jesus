@@ -1,4 +1,6 @@
 import { motion } from "motion/react";
+import { auth } from "../firebase";
+import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, addDoc, query, orderBy, where } from "firebase/firestore";
 import { Quote, Send } from "lucide-react";
 import React, { useState, useEffect } from "react";
@@ -10,42 +12,52 @@ export function Testimonials() {
   const [success, setSuccess] = useState(false);
   const [nome, setNome] = useState("");
   const [mensagem, setMensagem] = useState("");
+  const [user, setUser] = useState<any>(null);
   const [testemunhos, setTestemunhos] = useState<any[]>([]);
 
-  // ✅ Buscar testemunhos do banco
-useEffect(() => {
-  const fetchTestemunhos = async () => {
+  // ✅ Detectar usuário logado
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
 
-    const q = query(
-      collection(db, "testemunhos"),
-      where("aprovado", "==", true),
-      orderBy("data", "desc")
-    );
+    return () => unsubscribe();
+  }, []);
 
-    const querySnapshot = await getDocs(q);
+  // ✅ Buscar testemunhos aprovados
+  useEffect(() => {
+    const fetchTestemunhos = async () => {
+      const q = query(
+        collection(db, "testemunhos"),
+        where("aprovado", "==", true),
+        orderBy("data", "desc")
+      );
 
-    const lista = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
+      const querySnapshot = await getDocs(q);
 
-    setTestemunhos(lista);
-  };
+      const lista = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
 
-  fetchTestemunhos();
-}, []);
+      setTestemunhos(lista);
+    };
+
+    fetchTestemunhos();
+  }, []);
+
   // ✅ Salvar novo testemunho
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-  await addDoc(collection(db, "testemunhos"), {
-  nome,
-  mensagem,
-  data: new Date(),
-  aprovado: false
-});
+      await addDoc(collection(db, "testemunhos"), {
+        nome,
+        mensagem,
+        data: new Date(),
+        aprovado: false
+      });
 
       setSuccess(true);
       setNome("");
@@ -76,7 +88,7 @@ useEffect(() => {
           </p>
         </div>
 
-        {/* ✅ Mostrar testemunhos do banco */}
+        {/* ✅ Testemunhos */}
         <div className="grid md:grid-cols-2 gap-8 mb-16">
           {testemunhos.map((item) => (
             <motion.div
@@ -93,12 +105,18 @@ useEffect(() => {
         {/* ✅ Formulário */}
         <div className="text-center">
           {!showForm ? (
-            <button
-              onClick={() => setShowForm(true)}
-              className="bg-brand-gold text-brand-green font-bold py-4 px-10 rounded-full"
-            >
-              Pretendo Contar o meu Testemunho
-            </button>
+            user ? (
+              <button
+                onClick={() => setShowForm(true)}
+                className="bg-brand-gold text-brand-green font-bold py-4 px-10 rounded-full"
+              >
+                Pretendo Contar o meu Testemunho
+              </button>
+            ) : (
+              <p className="text-red-500 font-semibold">
+                É necessário estar logado para enviar um testemunho.
+              </p>
+            )
           ) : (
             <div className="bg-white p-8 rounded-3xl max-w-2xl mx-auto text-left">
               {success ? (
