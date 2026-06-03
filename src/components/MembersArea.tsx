@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "motion/react";
+import { signOut } from "firebase/auth";
 import { onAuthStateChanged } from "firebase/auth";
 import { Users, Lock, X, CheckCircle } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -48,6 +49,10 @@ export function MembersArea() {
       setTimeout(() => setSuccessMsg(""), 8000);
     }, 1500);
   };
+
+  const handleLogout = async () => {
+    await signOut(auth);
+  };
   return (
     <section id="members" className="py-24 bg-brand-green relative overflow-hidden">
       {/* Decorative lines */}
@@ -74,6 +79,12 @@ export function MembersArea() {
           {user && (
   <div className="mb-6 text-brand-gold font-bold">
     ✅ Bem-vindo, {user.email}
+    <button
+  onClick={handleLogout}
+  className="mt-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
+>
+  Sair
+</button>
   </div>
 )}
 
