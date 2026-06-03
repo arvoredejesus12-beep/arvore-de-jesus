@@ -1,4 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
+import { db } from "../firebase";
+import { doc, getDoc } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import { onAuthStateChanged } from "firebase/auth";
 import { Users, Lock, X, CheckCircle } from "lucide-react";
@@ -14,9 +16,19 @@ export function MembersArea() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState<any>(null);
-  useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+  const [role, setRole] = useState<string | null>(null);
+ useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
     setUser(currentUser);
+
+    if (currentUser) {
+      const docRef = doc(db, "usuarios", currentUser.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setRole(docSnap.data().role);
+      }
+    }
   });
 
   return () => unsubscribe();
