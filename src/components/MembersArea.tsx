@@ -1,21 +1,30 @@
 import { motion, AnimatePresence } from "motion/react";
 import { Users, Lock, X, CheckCircle } from "lucide-react";
 import { useState } from "react";
+import { auth } from "../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export function MembersArea() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [showSignup, setShowSignup] = useState(false);
   const [isSigningUp, setIsSigningUp] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleLogin = (e: any) => {
+  const handleLogin = async (e: any) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSuccessMsg("Dados incorretos ou em análise. Em breve a área de membros estará disponível globalmente.");
-      setTimeout(() => setSuccessMsg(""), 5000);
-    }, 1500);
+    setSuccessMsg("");
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      setSuccessMsg("Login realizado com sucesso!");
+    } catch (error: any) {
+      setSuccessMsg("Erro ao entrar: " + error.message);
+    }
+
+    setIsSubmitting(false);
   };
 
   const handleSignup = (e: any) => {
@@ -24,11 +33,12 @@ export function MembersArea() {
     setTimeout(() => {
       setIsSigningUp(false);
       setShowSignup(false);
-      setSuccessMsg("Pedido de acesso criado com sucesso. A secretaria enviará o teu acesso por e-mail após validar os dados de membro.");
+      setSuccessMsg(
+        "Pedido de acesso criado com sucesso. A secretaria enviará o teu acesso por e-mail após validar os dados de membro."
+      );
       setTimeout(() => setSuccessMsg(""), 8000);
     }, 1500);
   };
-
   return (
     <section id="members" className="py-24 bg-brand-green relative overflow-hidden">
       {/* Decorative lines */}
@@ -56,19 +66,23 @@ export function MembersArea() {
           <form className="max-w-md mx-auto space-y-4" onSubmit={handleLogin}>
             <div>
               <input
-                required
-                type="email"
-                placeholder="O teu e-mail"
-                className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold placeholder-gray-400 transition-all"
-              />
+  required
+  type="email"
+  value={email}
+  onChange={(e) => setEmail(e.target.value)}
+  placeholder="O teu e-mail"
+  className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold placeholder-gray-400 transition-all"
+/>
             </div>
             <div className="relative">
               <input
-                required
-                type="password"
-                placeholder="Palavra-passe"
-                className="w-full px-5 py-4 pl-12 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold placeholder-gray-400 transition-all"
-              />
+  required
+  type="password"
+  value={password}
+  onChange={(e) => setPassword(e.target.value)}
+  placeholder="Palavra-passe"
+  className="w-full px-5 py-4 pl-12 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold placeholder-gray-400 transition-all"
+/>
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             </div>
             
