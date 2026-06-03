@@ -76,18 +76,26 @@ export function MembersArea() {
           <p className="text-gray-300 text-lg mb-10 max-w-2xl mx-auto">
             Conteúdo exclusivo para os membros da comunidade Árvore de Jesus. Estudos bíblicos, materiais de discipulado e acompanhamento pastoral.
           </p>
-          {user && (
-  <div className="mb-6 text-brand-gold font-bold">
-    ✅ Bem-vindo, {user.email}
-    <button
-  onClick={handleLogout}
-  className="mt-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
->
-  Sair
-</button>
-  </div>
-)}
+         {user && (
+  <>
+    <div className="mt-6 p-6 bg-white/10 rounded-xl">
+      <h3 className="text-xl font-bold mb-2">Conteúdo Exclusivo</h3>
+      <p>Bem-vindo à plataforma de estudos bíblicos.</p>
+    </div>
 
+    <div className="mb-6 text-brand-gold font-bold">
+      ✅ Bem-vindo, {user.email}
+      <div>
+        <button
+          onClick={handleLogout}
+          className="mt-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
+        >
+          Sair
+        </button>
+      </div>
+    </div>
+  </>
+)}
 {!user && (
   <form className="max-w-md mx-auto space-y-4" onSubmit={handleLogin}>
     <div>
