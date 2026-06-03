@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { collection, getDocs, addDoc, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, addDoc, query, orderBy, where } from "firebase/firestore";
 import { Quote, Send } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { db } from "../firebase";
@@ -13,11 +13,12 @@ export function Testimonials() {
   const [testemunhos, setTestemunhos] = useState<any[]>([]);
 
   // ✅ Buscar testemunhos do banco
-  useEffect(() => {
+useEffect(() => {
   const fetchTestemunhos = async () => {
 
     const q = query(
       collection(db, "testemunhos"),
+      where("aprovado", "==", true),
       orderBy("data", "desc")
     );
 
@@ -39,11 +40,12 @@ export function Testimonials() {
     setIsSubmitting(true);
 
     try {
-      await addDoc(collection(db, "testemunhos"), {
-        nome,
-        mensagem,
-        data: new Date()
-      });
+  await addDoc(collection(db, "testemunhos"), {
+  nome,
+  mensagem,
+  data: new Date(),
+  aprovado: false
+});
 
       setSuccess(true);
       setNome("");
