@@ -16,21 +16,25 @@ export function MembersArea() {
 
   // ✅ Detectar usuário e role
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setUser(currentUser);
+  const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    setUser(currentUser);
 
-      if (currentUser) {
-        const docRef = doc(db, "usuarios", currentUser.uid);
-        const docSnap = await getDoc(docRef);
+    if (currentUser) {
+      const docRef = doc(db, "users", currentUser.uid);
+      const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-          setRole(docSnap.data().role);
-        }
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        console.log("Role:", data.role);
+        setRole(data.role); // ✅ AGORA FUNCIONA
       }
-    });
+    } else {
+      setRole(null);
+    }
+  });
 
-    return () => unsubscribe();
-  }, []);
+  return () => unsubscribe();
+}, []);
 
   // ✅ Login
   const handleLogin = async (e: any) => {
