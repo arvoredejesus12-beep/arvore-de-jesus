@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { AdminPanel } from "./AdminPanel";
 import { db, auth } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { signOut, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
@@ -85,9 +86,13 @@ export function MembersArea() {
           {user ? (
             <>
               {role === "admin" && (
-                <div className="mt-6 p-6 bg-yellow-400 text-black rounded-xl font-bold">
-                  👑 Você está logado como ADMIN
-                </div>
+                <>
+                  <div className="mt-6 p-6 bg-yellow-400 text-black rounded-xl font-bold">
+                    👑 Você está logado como ADMIN
+                  </div>
+
+                  <AdminPanel />
+                </>
               )}
 
               <div className="mt-6 p-6 bg-white/10 rounded-xl">
