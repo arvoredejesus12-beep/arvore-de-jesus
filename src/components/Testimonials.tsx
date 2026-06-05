@@ -10,12 +10,11 @@ import {
   serverTimestamp
 } from "firebase/firestore";
 
-export function Testemunhos() {
+export function Testimonials() {
   const [mensagem, setMensagem] = useState("");
   const [lista, setLista] = useState<any[]>([]);
   const user = auth.currentUser;
 
-  // ✅ Buscar testemunhos aprovados
   useEffect(() => {
     const buscar = async () => {
       const q = query(
@@ -37,21 +36,15 @@ export function Testemunhos() {
     buscar();
   }, []);
 
-  // ✅ Enviar testemunho
   const enviar = async () => {
     if (!user) {
-      alert("Precisa estar logado para enviar testemunho.");
-      return;
-    }
-
-    if (!mensagem.trim()) {
-      alert("Escreva um testemunho.");
+      alert("Precisa estar logado.");
       return;
     }
 
     await addDoc(collection(db, "testemunhos"), {
       nome: user.email,
-      mensagem: mensagem,
+      mensagem,
       aprovado: false,
       data: serverTimestamp(),
       userId: user.uid
