@@ -29,7 +29,7 @@ export function MembersArea() {
           console.log("Documento encontrado:", data);
           setRole(data.role?.trim().toLowerCase());
         } else {
-          console.log("Documento NÃO encontrado");
+          console.log("UID logado:", currentUser.uid);
           setRole(null);
         }
       } else {
