@@ -2,7 +2,11 @@ import { motion } from "motion/react";
 import { AdminPanel } from "./AdminPanel";
 import { db, auth } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
-import { signOut, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signOut,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { Users } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -21,15 +25,26 @@ export function MembersArea() {
       setUser(currentUser);
 
       if (currentUser) {
-        const docRef = doc(db, "users", currentUser.uid);
-        const docSnap = await getDoc(docRef);
+        console.log("UID logado:", currentUser.uid);
 
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          console.log("Documento encontrado:", data);
-          setRole(data.role?.trim().toLowerCase());
-        } else {
-          console.log("UID logado:", currentUser.uid);
+        try {
+          const docRef = doc(db, "users", currentUser.uid);
+          const docSnap = await getDoc(docRef);
+
+          console.log("Documento existe?", docSnap.exists());
+
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            console.log("Dados do Firestore:", data);
+
+            const userRole = data.role?.trim().toLowerCase();
+            setRole(userRole);
+          } else {
+            console.log("Documento NÃO encontrado no Firestore");
+            setRole(null);
+          }
+        } catch (error) {
+          console.error("Erro ao buscar role:", error);
           setRole(null);
         }
       } else {
@@ -79,12 +94,11 @@ export function MembersArea() {
             <Users className="w-10 h-10 text-brand-gold" />
           </div>
 
-          <h2 className="text-3xl font-bold mb-4">
-            Área do Membro
-          </h2>
+          <h2 className="text-3xl font-bold mb-4">Área do Membro</h2>
 
           {user ? (
             <>
+              {/* ✅ ADMIN */}
               {role === "admin" && (
                 <>
                   <div className="mt-6 p-6 bg-yellow-400 text-black rounded-xl font-bold">
@@ -95,8 +109,11 @@ export function MembersArea() {
                 </>
               )}
 
+              {/* ✅ CONTEÚDO NORMAL */}
               <div className="mt-6 p-6 bg-white/10 rounded-xl">
-                <h3 className="text-xl font-bold mb-2">Conteúdo Exclusivo</h3>
+                <h3 className="text-xl font-bold mb-2">
+                  Conteúdo Exclusivo
+                </h3>
                 <p>Bem-vindo à plataforma privada.</p>
               </div>
 
@@ -112,7 +129,10 @@ export function MembersArea() {
               </button>
             </>
           ) : (
-            <form onSubmit={handleLogin} className="space-y-4 mt-6 max-w-md mx-auto">
+            <form
+              onSubmit={handleLogin}
+              className="space-y-4 mt-6 max-w-md mx-auto"
+            >
               <input
                 required
                 type="email"
