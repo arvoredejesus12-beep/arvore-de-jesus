@@ -1,10 +1,9 @@
 import { motion } from "motion/react";
-import { db } from "../firebase";
+import { db, auth } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { signOut, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { Users } from "lucide-react";
 import { useState, useEffect } from "react";
-import { auth } from "../firebase";
 
 export function MembersArea() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -13,28 +12,34 @@ export function MembersArea() {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState<any>(null);
   const [role, setRole] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // ✅ Detectar usuário e role
+  // ✅ Detectar usuário e buscar role
   useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-    setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
 
-    if (currentUser) {
-      const docRef = doc(db, "users", currentUser.uid);
-      const docSnap = await getDoc(docRef);
+      if (currentUser) {
+        const docRef = doc(db, "users", currentUser.uid);
+        const docSnap = await getDoc(docRef);
 
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        console.log("Role:", data.role);
-        setRole(data.role); // ✅ AGORA FUNCIONA
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          console.log("Documento encontrado:", data);
+          setRole(data.role?.trim().toLowerCase());
+        } else {
+          console.log("Documento NÃO encontrado");
+          setRole(null);
+        }
+      } else {
+        setRole(null);
       }
-    } else {
-      setRole(null);
-    }
-  });
 
-  return () => unsubscribe();
-}, []);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   // ✅ Login
   const handleLogin = async (e: any) => {
@@ -57,27 +62,30 @@ export function MembersArea() {
     await signOut(auth);
   };
 
+  if (loading) {
+    return <div className="text-center py-10">Carregando...</div>;
+  }
+
   return (
-    <section id="members" className="py-24 bg-brand-green relative overflow-hidden">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section className="py-24 bg-brand-green">
+      <div className="max-w-4xl mx-auto px-4">
         <motion.div
           initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          animate={{ opacity: 1 }}
           className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8 text-center text-white shadow-2xl"
         >
           <div className="w-20 h-20 bg-brand-gold/20 rounded-full flex items-center justify-center mx-auto mb-6">
             <Users className="w-10 h-10 text-brand-gold" />
           </div>
 
-          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">
+          <h2 className="text-3xl font-bold mb-4">
             Área do Membro
           </h2>
 
-          {/* ✅ Se estiver logado */}
           {user ? (
             <>
               {role === "admin" && (
-                <div className="mt-6 p-6 bg-yellow-400 text-black rounded-xl">
+                <div className="mt-6 p-6 bg-yellow-400 text-black rounded-xl font-bold">
                   👑 Você está logado como ADMIN
                 </div>
               )}
@@ -99,7 +107,6 @@ export function MembersArea() {
               </button>
             </>
           ) : (
-            // ✅ Se NÃO estiver logado
             <form onSubmit={handleLogin} className="space-y-4 mt-6 max-w-md mx-auto">
               <input
                 required
